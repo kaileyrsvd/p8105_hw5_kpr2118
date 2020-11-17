@@ -98,7 +98,7 @@ results_df %>%
 
 ## Problem 2 
 
-Import data
+Import data and tidy
 
 ```{r}
 path_df = 
@@ -107,13 +107,34 @@ path_df =
   ) %>% 
     mutate(
       path = str_c("data/lda_data/", path), 
-      data = map(path, read_csv))
+      data = map(path, read_csv)) %>%
+  unnest(data) %>% 
+  pivot_longer(
+    week_1:week_8, 
+    names_to = "week", 
+    values_to = "observation", 
+    names_prefix = "week_"
+  ) %>%
+  mutate(
+    week = as.factor(week)
+  ) %>% 
+  separate(path, c("path", "arm_id"), sep = "lda_data/") %>% 
+  separate(arm_id, c("arm", "id"), sep = "_") %>% 
+  separate(id, c("id", "csv")) %>% 
+  select(id, arm, week, observation)
+```
 
+Spaghetti plot showing observations on each subject over time
 
-
-
+```{r}
 
 ```
+
+
+
+
+
+
 
 
 
