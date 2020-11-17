@@ -98,6 +98,22 @@ results_df %>%
 
 ## Problem 2 
 
+Import data
+
+```{r}
+path_df = 
+  tibble(
+    path = list.files("data/lda_data"), 
+  ) %>% 
+    mutate(
+      path = str_c("data/lda_data/", path), 
+      data = map(path, read_csv))
+
+
+
+
+
+```
 
 
 
