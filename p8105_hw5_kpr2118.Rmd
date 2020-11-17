@@ -138,8 +138,27 @@ path_df %>%
   xlab("Time (weeks)") 
 ```
 
+Graph description HERE once figured out
+
 ## Problem 3 
 
+Create function
+
+```{r}
+sim_one_samp = function(n = 30, mu = 0, sigma = 5) { 
+  
+  sim_data = tibble(
+    x = rnorm(n, mean = mu, sd = sigma),
+  )
+  
+  sim_data %>% 
+    t.test(mu = 0, alpha = 0.05) %>% 
+    broom::tidy() %>% 
+    select(estimate, p.value)
+  
+}
+
+```
 
 
 
