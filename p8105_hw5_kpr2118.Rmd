@@ -25,6 +25,49 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ## Problem 1 
 
+Read in the data. 
+
+#### Data Description: 
+
+The homicide data provided by the Washington Post is information on over 52,000 criminal homicides in 50 large U.S. cities over the past decade. It contains variables that describe the date and location of the killing, if there was an arrest made (or not), basic demographics about the victim (first and last name, race, age, sex). 
+
+```{r}
+homicide_df = 
+  read_csv("data/homicide-data.csv") %>% 
+  mutate(
+    city_state = str_c(city, state, sep = "_"), 
+    resolved = case_when(
+      disposition == "Closed without arrest" ~ "unsolved", 
+      disposition == "Open/No arrest"        ~ "unsolved", 
+      disposition == "Closed by arrest"      ~ "solved",
+      )
+  ) %>% 
+  select(city_state, resolved) %>% 
+  filter(city_state != "Tulsa_AL")
+```
+
+Take a closer look.... 
+
+```{r}
+aggregate_df = 
+  homicide_df %>%
+    group_by(city_state) %>% 
+    summarize(
+      hom_total = n(), 
+      hom_unsolved = sum(resolved == "unsolved")
+    )
+```
+
+Single city prop test...
+
+```{r}
+prop.test(
+  aggregate_df %>% filter(city_state == "Baltimore_MD") %>%  pull(hom_unsolved), 
+  aggregate_df %>% filter(city_state == "Baltimore_MD") %>% pull(hom_total)) %>% 
+  broom::tidy()
+```
+
+
 
 
 
