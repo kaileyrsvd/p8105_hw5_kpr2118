@@ -173,7 +173,7 @@ sim_results =
     mu = c(0, 1, 2, 3, 4, 5, 6)
   ) %>% 
   mutate(
-    output_lists = map(.x = mu, ~rerun(5000, sim_one_samp(mu))), 
+    output_lists = map(.x = mu, ~rerun(5000, sim_one_samp(mu = .x))), 
     estimate_df = map(output_lists, bind_rows)
     ) %>% 
     select(-output_lists) %>% 
