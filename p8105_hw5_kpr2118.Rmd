@@ -121,7 +121,11 @@ path_df =
   separate(path, c("path", "arm_id"), sep = "lda_data/") %>% 
   separate(arm_id, c("arm", "id"), sep = "_") %>% 
   separate(id, c("id", "csv")) %>% 
-  select(id, arm, week, observation)
+  select(id, arm, week, observation) %>% 
+  mutate(
+    arm = str_replace(arm, c("con"), "control"), 
+    arm = str_replace(arm, c("exp"), "experiment")
+  )
 ```
 
 Spaghetti plot showing observations on each subject over time
@@ -129,9 +133,12 @@ Spaghetti plot showing observations on each subject over time
 ```{r}
 path_df %>% 
   ggplot(aes(x = week, y = observation, group = id, color = arm)) + 
-  geom_line()
+  geom_line() + 
+  labs(title = "Observations per subject over time") +
+  xlab("Time (weeks)") 
 ```
 
+## Problem 3 
 
 
 
