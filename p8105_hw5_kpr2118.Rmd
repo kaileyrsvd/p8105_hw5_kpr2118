@@ -127,7 +127,9 @@ path_df =
 Spaghetti plot showing observations on each subject over time
 
 ```{r}
-
+path_df %>% 
+  ggplot(aes(x = week, y = observation, group = id, color = arm)) + 
+  geom_line()
 ```
 
 
