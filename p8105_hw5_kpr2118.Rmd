@@ -5,9 +5,10 @@ date: "11/87/2020"
 output: github_document
 ---
 
-```{r}
+```{r message=FALSE}
 library(tidyverse)
 library(rvest)
+library(patchwork)
 
 knitr::opts_chunk$set(
   fig.width = 6, 
@@ -33,7 +34,7 @@ Read in the data.
 
 The homicide data provided by the Washington Post is information on over 52,000 criminal homicides in 50 large U.S. cities over the past decade. It contains variables that describe the date and location of the killing, if there was an arrest made (or not), basic demographics about the victim (first and last name, race, age, sex). 
 
-```{r}
+```{r message=FALSE}
 homicide_df = 
   read_csv("data/homicide-data.csv") %>% 
   mutate(
@@ -102,7 +103,7 @@ results_df %>%
 
 Import data and tidy
 
-```{r}
+```{r, message = FALSE}
 path_df = 
   tibble(
     path = list.files("data/lda_data"), 
@@ -204,6 +205,35 @@ sim_results %>%
 
 Describe the association here
 
+```{r}
+avg_est_p = 
+  sim_results %>% 
+    group_by(mu) %>% 
+    summarize(avg_est = mean(estimate)) %>% 
+    ggplot(aes(x = mu, y = avg_est)) + 
+    geom_point() + 
+    geom_line() + 
+    xlab("Mu (mean)") +
+    ylab("Average Estimate mu_hat") + 
+    labs(title = "Average estimate mu_hat vs. true value of mu")
 
+avg_est_rej_p = 
+  sim_results %>% 
+    group_by(mu) %>% 
+    filter(reject == "reject") %>% 
+    summarize(avg_est2 = mean(estimate)) %>% 
+    ggplot(aes(x = mu, y = avg_est2)) + 
+    geom_point() + 
+    geom_line() + 
+    xlab("Mu (mean)") +
+    ylab("Average Estimate mu_hat") + 
+    labs(title = "Average estimate mu_hat vs. true value of mu (for 'reject')")
+
+
+avg_est_p + avg_est_rej_p
+
+```
+
+Talk about the sample avg. HERE. 
 
 
