@@ -193,11 +193,16 @@ To look at the proportion of times the null was rejected (power) vs. true value 
 ```{r}
 sim_results %>% 
   group_by(mu) %>% 
-  count(reject)
+  summarize(proportion_rej = mean(reject == "reject")) %>% 
+  ggplot(aes(x = mu, y = proportion_rej)) +
+  geom_point() +
+  geom_line() + 
+  ylab("Proportion Rejected") +
+  xlab("Mu (mean)") +
+  labs(title = "Power per mu value")
 ```
 
-
-
+Describe the association here
 
 
 
